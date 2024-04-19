@@ -16,10 +16,9 @@ interface Props {
 const Header: React.FC<Props> = ({title, mainStyles}) => {
     return(
         <Appbar.Header style={[mainStyles, styles.header]} mode='center-aligned'>
-            {/*<Appbar.BackAction onPress={() => {console.log(`AppBar back pressed`)}} />*/}
             <Appbar.Content title={title} titleStyle={styles.headerTitle}/>
-            <Appbar.Action icon="information" onPress={() => {console.log(`AppBar info pressed`)}} />
-            <Appbar.Action icon="dots-vertical" onPress={() => {console.log(`AppBar menu pressed`)}} />
+            <Appbar.Action icon="information" color='white' onPress={() => {console.log(`AppBar info pressed`)}} />
+            <Appbar.Action icon="dots-vertical" color='white' onPress={() => {console.log(`AppBar menu pressed`)}} />
         </Appbar.Header>
     );
 }
@@ -27,11 +26,13 @@ const Header: React.FC<Props> = ({title, mainStyles}) => {
 const styles = StyleSheet.create({
     header: {
       alignItems: 'center',
+      borderWidth: 0.5,
+      borderColor: 'black'
     },
     headerTitle: {
         fontWeight: '600',
-        color: 'blue'
-    }
+        color: 'white'
+    },
 });
 
 

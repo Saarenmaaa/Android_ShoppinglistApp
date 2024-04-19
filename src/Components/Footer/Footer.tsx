@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     footerTitle: {
-        fontWeight: '600',
-        fontSize: 15,
-        color: 'blue'
+        fontWeight: '200',
+        fontSize: 18,
+        color: 'white'
     }
 });
 

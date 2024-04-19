@@ -1,11 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -26,7 +19,8 @@ import {
 import Header from './src/Components/Header/Header';
 import Footer from './src/Components/Footer/Footer';
 import AddItem from './src/Components/AddItem/AddItem';
-
+import ItemList from './src/Components/ItemList/ItemList';
+import storage from './storage';
 
 export type ShoppingListItem = {
   item: string;
@@ -34,18 +28,45 @@ export type ShoppingListItem = {
   id: string;
 }
 
-const testShoppingList: ShoppingListItem[] = [
-  {item: "Bananas", quantity: "2", id: "102"},
-  {item: "Apples", quantity: "5", id: "103"}
-];
-
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [shoppinglist, setShoppingList] = useState<ShoppingListItem[]>([]);
+  const backgroundStyle = { backgroundColor: '#5D1049'};
 
-  const [shoppinglist, setShoppingList] = useState<ShoppingListItem[]>(testShoppingList);
+  useEffect(() => {
+    // shoppingList from storage when component starts
+    storage
+      .load({
+        key: 'shoppingList'
+      })
+      .then((data: ShoppingListItem[]) => {
+        setShoppingList(data);
+      })
+      .catch((error: Error) => {
+        console.error('Error loading shoppingList:', error);
+      });
+  }, []);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const saveShoppingList = (list: ShoppingListItem[]) => {
+    storage
+      .save({
+        key: 'shoppingList',
+        data: list,
+      })
+      .then(() => {
+        console.log('ShoppingList saved.');
+      })
+      .catch((error: Error) => {
+        console.error('Error saving.', error);
+      });
+  };
+
+  const setShoppingListWithSave = (list: ShoppingListItem[]) => {
+    setShoppingList(list);
+    saveShoppingList(list);
+  };
+
+  const deleteItem = (id: string) => {
+    setShoppingListWithSave(shoppinglist.filter(item => item.id !== id));
   };
 
   console.log(`ShoppingList ${JSON.stringify(shoppinglist)}`)
@@ -53,8 +74,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={[styles.mainContainer, backgroundStyle]}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={'#4E0D3A'}
       />
 
       <View style={styles.headerContainer}>
@@ -64,14 +84,16 @@ function App(): React.JSX.Element {
       <View style={styles.addItemContainer}>
         <AddItem
           shoppingList={shoppinglist}
-          setShoppingList={setShoppingList}
+          setShoppingListWithSave={setShoppingListWithSave}
           mainStyles={styles.addItemComponent}
         />
-          
       </View>
 
       <View style={styles.listItemsContainer}>
-        <Text>List items</Text>
+        <ItemList 
+          shoppingList={shoppinglist}
+          deleteItem={deleteItem}
+        ></ItemList>
       </View>
 
       <View style={styles.footerContainer}>
@@ -84,36 +106,31 @@ function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   headerContainer: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'red',
   },
   addItemContainer: {
     flex: 5,
-    borderWidth: 1,
-    borderColor: 'red',
+    fontFamily: 'd'
   },
   listItemsContainer: {
     flex: 7,
-    borderWidth: 1,
-    borderColor: 'red',
+    borderWidth: 0.5,
+    borderColor: 'black'
   },
   footerContainer: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'red',
   },
   headerComponent: {
-    backgroundColor: 'lightyellow'
+    backgroundColor: '#5D1049',
   },
   footerComponent: {
-    backgroundColor: 'lightyellow'
+    backgroundColor: '#5D1049'
   },
   addItemComponent: {
-    backgroundColor: 'lightyellow'
+    backgroundColor: '#720D5D'
   },
 });
 
