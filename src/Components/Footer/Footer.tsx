@@ -12,11 +12,10 @@ interface Props {
     title: string;
     mainStyles: StyleProp<ViewStyle>;
 }
-
+// Footer BAR
 const Footer: React.FC<Props> = ({title, mainStyles}) => {
     return(
         <Appbar.Header style={[mainStyles, styles.footer]} mode='center-aligned'>
-            {/*<Appbar.BackAction onPress={() => {console.log(`AppBar back pressed`)}} />*/}
             <Appbar.Content title={title} titleStyle={styles.footerTitle}/>
         </Appbar.Header>
     );

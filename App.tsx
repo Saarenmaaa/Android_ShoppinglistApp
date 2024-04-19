@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Importing all the Components
 import Header from './src/Components/Header/Header';
 import Footer from './src/Components/Footer/Footer';
 import AddItem from './src/Components/AddItem/AddItem';
@@ -29,11 +20,12 @@ export type ShoppingListItem = {
 }
 
 function App(): React.JSX.Element {
+  // useState for ShoppingList
   const [shoppinglist, setShoppingList] = useState<ShoppingListItem[]>([]);
   const backgroundStyle = { backgroundColor: '#5D1049'};
 
   useEffect(() => {
-    // shoppingList from storage when component starts
+    // Load shoppingList from storage when component appears
     storage
       .load({
         key: 'shoppingList'
@@ -46,6 +38,7 @@ function App(): React.JSX.Element {
       });
   }, []);
 
+  // SaveShoppingList to storage
   const saveShoppingList = (list: ShoppingListItem[]) => {
     storage
       .save({
@@ -60,11 +53,13 @@ function App(): React.JSX.Element {
       });
   };
 
+  // Save to Storage and setShoppingList at the same time
   const setShoppingListWithSave = (list: ShoppingListItem[]) => {
     setShoppingList(list);
     saveShoppingList(list);
   };
 
+  // Delete Item and Save at the same time
   const deleteItem = (id: string) => {
     setShoppingListWithSave(shoppinglist.filter(item => item.id !== id));
   };
@@ -73,22 +68,25 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={[styles.mainContainer, backgroundStyle]}>
+      {/* StatusBar */}
       <StatusBar
         backgroundColor={'#4E0D3A'}
       />
 
+      {/* Header */}
       <View style={styles.headerContainer}>
         <Header title="Shopping List App" mainStyles={styles.headerComponent}></Header>
       </View>
 
+      {/* AddItem */}
       <View style={styles.addItemContainer}>
         <AddItem
           shoppingList={shoppinglist}
           setShoppingListWithSave={setShoppingListWithSave}
-          mainStyles={styles.addItemComponent}
         />
       </View>
 
+      {/* ItemList */}
       <View style={styles.listItemsContainer}>
         <ItemList 
           shoppingList={shoppinglist}
@@ -96,6 +94,7 @@ function App(): React.JSX.Element {
         ></ItemList>
       </View>
 
+      {/* Footer */}
       <View style={styles.footerContainer}>
         <Footer title='(c) Lab/TVT' mainStyles={styles.footerComponent}></Footer>
       </View>
@@ -113,7 +112,6 @@ const styles = StyleSheet.create({
   },
   addItemContainer: {
     flex: 5,
-    fontFamily: 'd'
   },
   listItemsContainer: {
     flex: 7,

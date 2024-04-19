@@ -7,21 +7,22 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { Appbar, IconButton, Text, TextInput } from 'react-native-paper';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import { ShoppingListItem } from '../../../App';
 import uuid from 'react-native-uuid'
 
 interface Props {
     shoppingList: ShoppingListItem[];
-    setShoppingListWithSave: (shoppingList: ShoppingListItem[]) => void;
-    mainStyles: StyleProp<ViewStyle>;
+    setShoppingListWithSave: (shoppingList: ShoppingListItem[]) => void; // Save to storage and Set to useState List
 }
 
-const AddItem: React.FC<Props> = ({shoppingList, setShoppingListWithSave, mainStyles}) => {
+const AddItem: React.FC<Props> = ({shoppingList, setShoppingListWithSave}) => {
     const [item, setItem] = useState<string>('')
     const [quantity, setQuantity] = useState<string>('')
     
     const addItem = () => {
+        // AddItem to check if There is Item inputted
+        // uuid used to create Unique code for id
         if(!item) {
             console.log("Item can not be empty")
         } else {
@@ -32,6 +33,7 @@ const AddItem: React.FC<Props> = ({shoppingList, setShoppingListWithSave, mainSt
         }
     }
 
+    // returns View including 2 Textinputs and AddButton
     return(
         <View style={styles.container}>
             <Text variant="headlineMedium" style={styles.headline}>Add Items to List</Text>

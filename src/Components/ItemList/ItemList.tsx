@@ -3,20 +3,20 @@
 import React, { useState } from 'react';
 import {
     FlatList,
-  StyleProp,
   StyleSheet,
   View,
-  ViewStyle,
 } from 'react-native';
-import { Appbar, IconButton, Text, TextInput } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 import { ShoppingListItem } from '../../../App';
 
 interface Props {
     shoppingList: ShoppingListItem[];
-    deleteItem: (id: string) => void;
+    deleteItem: (id: string) => void;  // Delete from storage and Set to useState List
 }
 
+// Returns FlatList
 const ItemList: React.FC<Props> = ({ shoppingList, deleteItem }) => {
+    // Create items for FlatList renderItems
     const items = ({ item }: { item: ShoppingListItem }) => 
         <View style={styles.item}>
             <Text style={styles.quantity}>{item.quantity}x</Text>

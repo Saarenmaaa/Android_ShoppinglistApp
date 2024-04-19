@@ -15,6 +15,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({title, mainStyles}) => {
     return(
+        // Header
         <Appbar.Header style={[mainStyles, styles.header]} mode='center-aligned'>
             <Appbar.Content title={title} titleStyle={styles.headerTitle}/>
             <Appbar.Action icon="information" color='white' onPress={() => {console.log(`AppBar info pressed`)}} />
